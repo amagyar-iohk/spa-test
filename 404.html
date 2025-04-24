@@ -20,7 +20,7 @@
         console.debug('basepath', basePath)
         console.debug('iframe', isIframe)
         console.debug('resource', resource)
-        
+
         function redirect(basePath) {
             function replaceLocation(path) {
                 console.info("redirecting to", path)
@@ -29,15 +29,8 @@
 
             if (isIframe) {
                 // redirect to static 404.html
-                if (localStorage.getItem('resource')) {
-                    localStorage.clear()
-                    replaceLocation(`${basePath}/static/404.html`)
-                    return
-                }
-
-                // try to fetch resource in iframe
-                localStorage.setItem('resource', resource);
-                replaceLocation(`${basePath}${resource}`)
+                localStorage.clear()
+                replaceLocation(`${basePath}/static/404.html`)
                 return
             }
 

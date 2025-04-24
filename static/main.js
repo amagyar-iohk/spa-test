@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       loadContent(event.state.page);
     } else {
       const storedPath = localStorage.getItem('resource');
-      localStorage.removeItem('resource')
+      localStorage.clear()
       if (storedPath) {
         window.history.replaceState(null, '', `.${storedPath}`);
         loadContent(storedPath);
