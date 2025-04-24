@@ -1,3 +1,6 @@
+const isLocalhost = window.location.host.includes('localhost')
+const basePath = isLocalhost ? "/" : "/spa-test"
+
 document.addEventListener('DOMContentLoaded', () => {
   const contentFrame = document.getElementById('content-iframe');
   const dropdownLinks = document.querySelectorAll('nav a');
@@ -7,18 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', handleNavigation);
   });
 
-  const routes = {
-    '/home': 'static/home.html',
-    '/home/': 'static/home.html',
-    '/releases': 'reports/releases',
-    '/weekly': 'reports/weekly',
-    '/cloud-agent': 'reports/cloud-agent',
-    '/mediator': 'reports/mediator',
-    '/prism-node': 'reports/prism-node',
-    '/typescript': 'reports/sdk-ts',
-    '/swift': 'reports/sdk-swift',
-    '/kotlin': 'reports/sdk-kmp'
-  };
+  const routes = {};
+  routes[`${basePath}/home`] = 'static/home.html';
+  routes[`${basePath}/releases`] = 'reports/releases';
+  routes[`${basePath}/weekly`] = 'reports/weekly';
+  routes[`${basePath}/cloud-agent`] = 'reports/cloud-agent';
+  routes[`${basePath}/mediator`] = 'reports/mediator';
+  routes[`${basePath}/prism-node`] = 'reports/prism-node';
+  routes[`${basePath}/typescript`] = 'reports/sdk-ts';
+  routes[`${basePath}/swift`] = 'reports/sdk-swift';
+  routes[`${basePath}/kotlin`] = 'reports/sdk-kmp';
+
   const defaultPage = '/home';
 
   function loadContent(path) {
@@ -32,9 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
       target = target.closest('a')
     }
     event.preventDefault();
-    const targetPage = `/${target.getAttribute('href')}`
+    const host = window.location.origin
+    const targetPage = target.href.replace(host, '')
     if (targetPage) {
-      history.pushState({ page: targetPage }, '', `.${targetPage}`);
+      history.pushState({ page: targetPage }, '', targetPage);
       document.activeElement.blur()
       loadContent(targetPage);
     }
@@ -47,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const storedPath = localStorage.getItem('resource');
       localStorage.clear()
       if (storedPath) {
-        window.history.replaceState(null, '', `.${storedPath}`);
+        window.history.replaceState(null, '', storedPath);
         loadContent(storedPath);
       } else {
         loadContent(defaultPage);

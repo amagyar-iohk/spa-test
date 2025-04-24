@@ -1,52 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My SPA</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-
 <body>
-    <div id="error"></div>
     <script>
-        const isLocalhost = window.location.host.includes('localhost')
-        const basePath = isLocalhost ? "/" : "/spa-test"
-        const isIframe = window.self !== window.top
-        const resource = window.location.pathname.replace('/spa-test', '');
-
-        console.info('localhost', isLocalhost)
-        console.info('basepath', basePath)
-        console.info('iframe', isIframe)
-        console.info('resource', resource)
+        const isLocalhost = window.location.host.includes('localhost');
+        const basePath = isLocalhost ? "/" : "/spa-test";
+        const isIframe = window.self !== window.top;
+        const resource = window.location.pathname;
 
         function redirect() {
             function replaceLocation(path) {
-                window.location.replace(path)
+                window.location.replace(path);
             }
 
             if (isIframe) {
                 // redirect to static 404.html
                 if (localStorage.getItem('resource')) {
-                    localStorage.clear()
-                    replaceLocation(`${basePath}/static/404.html`)
-                    return
+                    localStorage.clear();
+                    replaceLocation(`${basePath}/static/404.html`);
+                    return;
                 }
 
                 // try to fetch resource in iframe
                 localStorage.setItem('resource', resource);
-                replaceLocation(`${basePath}${resource}`)
-                return
+                replaceLocation(resource);
+                return;
             }
 
             // redirect on SPA
-            localStorage.clear()
+            localStorage.clear();
             localStorage.setItem('resource', resource);
-            replaceLocation(basePath)
+            replaceLocation(basePath);
         }
-        redirect()
+        redirect();
     </script>
 </body>
-
 </html>
