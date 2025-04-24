@@ -56,9 +56,9 @@
 <body>
     <div id="app">
         <nav class="nav">
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a href="/docs">Docs</a>
+            <a href="/spa-test/">Home</a>
+            <a href="/spa-test/about">About</a>
+            <a href="/spa-test/docs">Docs</a>
         </nav>
         <div id="home" class="active">
             <h2>Home Page</h2>
@@ -76,9 +76,9 @@
 
     <script>
       const routes = {
-        '/': 'home',
-        '/about': 'about',
-        '/docs': 'docs',
+        '/spa-test/': 'home',
+        '/spa-test/about': 'about',
+        '/spa-test/docs': 'docs',
       };
 
       function showPage(pageId) {
@@ -86,28 +86,25 @@
         const page = document.getElementById(pageId);
         if (page) {
           page.classList.add('active');
-        } else {
-          // If the pageId doesn't exist, you could redirect to home
-          showPage('home');
-          window.history.replaceState(null, 'Home', '/');
         }
       }
 
       function handleRouteChange() {
           const path = window.location.pathname;
-          const pageId = routes[path] || 'home'; // Default to home if path not found
+          const pageId = routes[path] || 'home';
           showPage(pageId);
       }
+
       // Initial route handling
       handleRouteChange();
 
       // Set up client-side navigation
       document.querySelectorAll('.nav a').forEach(link => {
           link.addEventListener('click', (event) => {
-              event.preventDefault(); // Prevent full page reload
+              event.preventDefault();
               const href = event.target.getAttribute('href');
-              window.history.pushState(null, '', href); // Update URL
-              handleRouteChange(); // Show the correct page.
+              window.history.pushState(null, '', href);
+              handleRouteChange();
           });
       });
 
@@ -117,7 +114,7 @@
       // Check for stored path after initial load (for 404 redirect)
       document.addEventListener('DOMContentLoaded', () => {
         const storedPath = localStorage.getItem('redirectAfterLoad');
-        if (storedPath && storedPath !== '/') {
+        if (storedPath && storedPath !== '/spa-test/') {
             window.history.replaceState(null, '', storedPath);
             handleRouteChange();
         }
