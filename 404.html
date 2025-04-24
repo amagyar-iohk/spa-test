@@ -20,7 +20,6 @@
         console.info('basepath', basePath)
         console.info('iframe', isIframe)
         console.info('resource', resource)
-        debugger
 
         function redirect() {
             function replaceLocation(path) {
@@ -31,14 +30,12 @@
                 // redirect to static 404.html
                 if (localStorage.getItem('resource')) {
                     localStorage.clear()
-                    debugger
                     replaceLocation(`${basePath}/static/404.html`)
                     return
                 }
 
                 // try to fetch resource in iframe
                 localStorage.setItem('resource', resource);
-                debugger
                 replaceLocation(`${basePath}${resource}`)
                 return
             }
@@ -46,7 +43,6 @@
             // redirect on SPA
             localStorage.clear()
             localStorage.setItem('resource', resource);
-            debugger
             replaceLocation(basePath)
         }
         redirect()
