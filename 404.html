@@ -11,57 +11,33 @@
 <body>
     <div id="error"></div>
     <script>
-        function redirect() {
-            const isIframe = window.self !== window.top
+        const isLocalhost = window.location.host.includes('localhost')
+        const basePath = isLocalhost ? "/" : "/spa-test"
+        const isIframe = window.self !== window.top
+        const resource = window.location.pathname.replace('/spa-test', '');
 
+        function redirect(basePath) {
             function replaceLocation(path) {
-                console.info("is iframe", isIframe)
-                console.info("redirecting to", path)
                 window.location.replace(path)
             }
 
             if (isIframe) {
-                // 404 on root
-                if (localStorage.getItem('not-found')) {
-                    localStorage.removeItem('not-found')
-                    replaceLocation('/static/404.html')
-                    return
-                }
-
-                // 404 on github
-                if (localStorage.getItem('retried')) {
-                    localStorage.removeItem('retried')
-                    localStorage.setItem('not-found', true)
-                    replaceLocation('/spa-test/static/404.html')
-                    return
-                }
-
+                // redirect to static 404.html
                 if (localStorage.getItem('resource')) {
-                    const resource = localStorage.getItem('resource')
-                    localStorage.setItem('resource', resource.replace('/integration', ''))
-                    localStorage.setItem('retried', true)
-                    replaceLocation(`${resource}`)
+                    localStorage.clear()
+                    replaceLocation(`${basePath}/static/404.html`)
+                    return
                 }
 
-                const resource = window.location.pathname.replace('/spa-test', '');
+                // try to fetch resource in iframe
                 localStorage.setItem('resource', resource);
-                replaceLocation(`/spa-test${resource}`)
+                replaceLocation(`${basePath}${resource}`)
                 return
             }
 
-            // redirect on root
-            if (localStorage.getItem('resource')) {
-                const resource = localStorage.getItem('resource')
-                localStorage.setItem('resource', resource.replace('/integration', ''))
-                localStorage.setItem('retried', true)
-                replaceLocation('/')
-                return
-            }
-
-            // redirect on github
-            const originalPath = window.location.pathname.replace('/spa-test', '');
+            // redirect on SPA
             localStorage.clear()
-            localStorage.setItem('resource', originalPath);
+            localStorage.setItem('resource', resource);
             replaceLocation('/spa-test')
         }
         redirect()
