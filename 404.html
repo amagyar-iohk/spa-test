@@ -32,7 +32,7 @@
                 if (localStorage.getItem('retried')) {
                     localStorage.removeItem('retried')
                     localStorage.setItem('not-found', true)
-                    replaceLocation('/integration/static/404.html')
+                    replaceLocation('/spa-test/static/404.html')
                     return
                 }
 
@@ -43,9 +43,9 @@
                     replaceLocation(`/${resource}`)
                 }
 
-                const resource = window.location.pathname;
+                const resource = window.location.pathname.substring(1);
                 localStorage.setItem('resource', resource);
-                replaceLocation(`/integration/${resource}`)
+                replaceLocation(`/spa-test/${resource}`)
                 return
             }
 
@@ -59,10 +59,10 @@
             }
 
             // redirect on github
-            const originalPath = window.location.pathname;
+            const originalPath = window.location.pathname.substring(1);
             localStorage.clear()
             localStorage.setItem('resource', originalPath);
-            replaceLocation('/integration')
+            replaceLocation('/spa-test')
         }
         redirect()
     </script>
