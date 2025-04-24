@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages SPA POC</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #app {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .nav a:hover {
+            color: #0056b3;
+        }
+
+        #home, #about, #docs {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        #home.active, #about.active, #docs.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="nav">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/docs">Docs</a>
+        </nav>
+        <div id="home" class="active">
+            <h2>Home Page</h2>
+            <p>Welcome to the Home Page!</p>
+        </div>
+        <div id="about">
+            <h2>About Page</h2>
+            <p>This is the About Page.</p>
+        </div>
+        <div id="docs">
+            <h2>Docs Page</h2>
+            <p>This is the Documentation Page.</p>
+        </div>
+    </div>
+
+    <script>
+      const routes = {
+        '/': 'home',
+        '/about': 'about',
+        '/docs': 'docs',
+      };
+
+      function showPage(pageId) {
+        document.querySelectorAll('#home, #about, #docs').forEach((p) => p.classList.remove('active'));
+        const page = document.getElementById(pageId);
+        if (page) {
+          page.classList.add('active');
+        } else {
+          // If the pageId doesn't exist, you could redirect to home
+          showPage('home');
+          window.history.replaceState(null, 'Home', '/');
+        }
+      }
+
+      function handleRouteChange() {
+          const path = window.location.pathname;
+          const pageId = routes[path] || 'home'; // Default to home if path not found
+          showPage(pageId);
+      }
+      // Initial route handling
+      handleRouteChange();
+
+      // Set up client-side navigation
+      document.querySelectorAll('.nav a').forEach(link => {
+          link.addEventListener('click', (event) => {
+              event.preventDefault(); // Prevent full page reload
+              const href = event.target.getAttribute('href');
+              window.history.pushState(null, '', href); // Update URL
+              handleRouteChange(); // Show the correct page.
+          });
+      });
+
+      // Handle back/forward button navigation
+      window.addEventListener('popstate', handleRouteChange);
+
+      // Check for stored path after initial load (for 404 redirect)
+      document.addEventListener('DOMContentLoaded', () => {
+        const storedPath = localStorage.getItem('redirectAfterLoad');
+        if (storedPath && storedPath !== '/') {
+            window.history.replaceState(null, '', storedPath);
+            handleRouteChange();
+        }
+        localStorage.removeItem('redirectAfterLoad');
+      });
+    </script>
+</body>
+</html>
