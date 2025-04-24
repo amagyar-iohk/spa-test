@@ -2,7 +2,7 @@ const isLocalhost = window.location.host.includes('localhost')
 const basePath = isLocalhost ? "/" : "/spa-test"
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("v1.5")
+  console.log("v1.5.1")
   const contentFrame = document.getElementById('content-iframe');
   const dropdownLinks = document.querySelectorAll('nav a');
 
