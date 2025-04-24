@@ -2,7 +2,7 @@ const isLocalhost = window.location.host.includes('localhost')
 const basePath = isLocalhost ? "/" : "/spa-test"
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("v1.4.2")
+  console.log("v1.4.3")
   const contentFrame = document.getElementById('content-iframe');
   const dropdownLinks = document.querySelectorAll('nav a');
 
@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   routes[`${basePath}/releases`] = `${basePath}/reports/releases/index.html`;
   routes[`${basePath}/weekly`] = `${basePath}/reports/weekly/index.html`;
   routes[`${basePath}/cloud-agent`] = `${basePath}/reports/cloud-agent/index.html`;
-  routes[`${basePath}/mediator`] = `${basePath}r/eports/mediator/index.html`;
-  routes[`${basePath}/prism-node`] = `${basePath}/reports/prism-node`;
+  routes[`${basePath}/mediator`] = `${basePath}/reports/mediator/index.html`;
+  routes[`${basePath}/prism-node`] = `${basePath}/reports/prism-node/index.html`;
   routes[`${basePath}/typescript`] = `${basePath}/reports/sdk-ts/index.html`;
   routes[`${basePath}/swift`] = `${basePath}/reports/sdk-swift/index.html`;
   routes[`${basePath}/kotlin`] = `${basePath}/reports/sdk-kmp/index.html`;
