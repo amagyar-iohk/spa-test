@@ -40,12 +40,12 @@
                     const resource = localStorage.getItem('resource')
                     localStorage.setItem('resource', resource.replace('/integration', ''))
                     localStorage.setItem('retried', true)
-                    replaceLocation(`/${resource}`)
+                    replaceLocation(`${resource}`)
                 }
 
                 const resource = window.location.pathname.replace('/spa-test', '');
                 localStorage.setItem('resource', resource);
-                replaceLocation(`/spa-test/${resource}`)
+                replaceLocation(`/spa-test${resource}`)
                 return
             }
 
