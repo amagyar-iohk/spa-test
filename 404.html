@@ -16,8 +16,14 @@
         const isIframe = window.self !== window.top
         const resource = window.location.pathname.replace('/spa-test', '');
 
+        console.debug('localhost', isLocalhost)
+        console.debug('basepath', basePath)
+        console.debug('iframe', isIframe)
+        console.debug('resource', resource)
+        
         function redirect(basePath) {
             function replaceLocation(path) {
+                console.info("redirecting to", path)
                 window.location.replace(path)
             }
 

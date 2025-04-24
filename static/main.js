@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const storedPath = localStorage.getItem('resource');
       localStorage.removeItem('resource')
       if (storedPath) {
-        console.error("stored path", storedPath)
         window.history.replaceState(null, '', `.${storedPath}`);
         loadContent(storedPath);
       } else {
