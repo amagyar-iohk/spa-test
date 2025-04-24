@@ -2,7 +2,7 @@ const isLocalhost = window.location.host.includes('localhost')
 const basePath = isLocalhost ? "/" : "/spa-test"
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("v1.3")
+  console.log("v1.3.1")
   const contentFrame = document.getElementById('content-iframe');
   const dropdownLinks = document.querySelectorAll('nav a');
 
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadContent(storedPath);
       } else {
         loadContent(defaultPage);
-        history.replaceState({ page: defaultPage }, '', `.${defaultPage}`);
+        history.replaceState({ page: defaultPage }, '', defaultPage);
       }
     }
   }
