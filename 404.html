@@ -43,7 +43,7 @@
                     replaceLocation(`/${resource}`)
                 }
 
-                const resource = window.location.pathname;
+                const resource = window.location.pathname.replace('/spa-test', '');
                 localStorage.setItem('resource', resource);
                 replaceLocation(`/spa-test/${resource}`)
                 return
@@ -59,7 +59,7 @@
             }
 
             // redirect on github
-            const originalPath = window.location.pathname;
+            const originalPath = window.location.pathname.replace('/spa-test', '');
             localStorage.clear()
             localStorage.setItem('resource', originalPath);
             replaceLocation('/spa-test')
