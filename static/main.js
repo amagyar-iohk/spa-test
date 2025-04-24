@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
     const targetPage = `/${target.getAttribute('href')}`
     if (targetPage) {
-      history.pushState({ page: targetPage }, '', `./${targetPage}`);
+      history.pushState({ page: targetPage }, '', `.${targetPage}`);
       document.activeElement.blur()
       loadContent(targetPage);
     }
