@@ -16,11 +16,12 @@
         const isIframe = window.self !== window.top
         const resource = window.location.pathname.replace('/spa-test', '');
 
-        console.debug('localhost', isLocalhost)
-        console.debug('basepath', basePath)
-        console.debug('iframe', isIframe)
-        console.debug('resource', resource)
-        
+        console.info('localhost', isLocalhost)
+        console.info('basepath', basePath)
+        console.info('iframe', isIframe)
+        console.info('resource', resource)
+        debugger
+
         function redirect(basePath) {
             function replaceLocation(path) {
                 window.location.replace(path)
@@ -30,12 +31,14 @@
                 // redirect to static 404.html
                 if (localStorage.getItem('resource')) {
                     localStorage.clear()
+                    debugger
                     replaceLocation(`${basePath}/static/404.html`)
                     return
                 }
 
                 // try to fetch resource in iframe
                 localStorage.setItem('resource', resource);
+                debugger
                 replaceLocation(`${basePath}${resource}`)
                 return
             }
@@ -43,7 +46,8 @@
             // redirect on SPA
             localStorage.clear()
             localStorage.setItem('resource', resource);
-            replaceLocation('/spa-test')
+            debugger
+            replaceLocation(basePath)
         }
         redirect()
     </script>
