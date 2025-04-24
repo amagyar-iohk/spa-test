@@ -2,7 +2,7 @@ const isLocalhost = window.location.host.includes('localhost')
 const basePath = isLocalhost ? "/" : "/spa-test"
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("v1.2")
+  console.log("v1.3")
   const contentFrame = document.getElementById('content-iframe');
   const dropdownLinks = document.querySelectorAll('nav a');
 
@@ -11,21 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const routes = {};
-  routes[`${basePath}/home`] = 'static/home.html';
-  routes[`${basePath}/releases`] = 'reports/releases';
-  routes[`${basePath}/weekly`] = 'reports/weekly';
-  routes[`${basePath}/cloud-agent`] = 'reports/cloud-agent';
-  routes[`${basePath}/mediator`] = 'reports/mediator';
-  routes[`${basePath}/prism-node`] = 'reports/prism-node';
-  routes[`${basePath}/typescript`] = 'reports/sdk-ts';
-  routes[`${basePath}/swift`] = 'reports/sdk-swift';
-  routes[`${basePath}/kotlin`] = 'reports/sdk-kmp';
+  routes[`${basePath}/home`] = `${basePath}/static/home.html`;
+  routes[`${basePath}/releases`] = `${basePath}/reports/releases/index.html`;
+  routes[`${basePath}/weekly`] = `${basePath}reports/weekly`;
+  routes[`${basePath}/cloud-agent`] = `${basePath}reports/cloud-agent`;
+  routes[`${basePath}/mediator`] = `${basePath}reports/mediator`;
+  routes[`${basePath}/prism-node`] = `${basePath}reports/prism-node`;
+  routes[`${basePath}/typescript`] = `${basePath}reports/sdk-ts`;
+  routes[`${basePath}/swift`] = `${basePath}reports/sdk-swift`;
+  routes[`${basePath}/kotlin`] = `${basePath}reports/sdk-kmp`;
 
-  const defaultPage = '/home';
+  const defaultPage = `${basePath}/home`;
 
   function loadContent(path) {
     console.log('main - loading content:', path, routes[path])
-    contentFrame.contentWindow.location.replace(routes[path]);
+    if (!routes[path]) {
+      contentFrame.contentWindow.location.replace('');
+    } else {
+      contentFrame.contentWindow.location.replace(routes[path]);
+    }
   }
 
   function handleNavigation(event) {
