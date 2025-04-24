@@ -1,19 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My SPA</title>
-    <link rel="stylesheet" href="styles.css"> </head>
-<body>
-    <div id="root">
-        </div>
+    <link rel="stylesheet" href="styles.css">
+</head>
 
+<body>
+    <div id="error"></div>
     <script>
-        // Get the originally requested path
-        const originalPath = window.location.pathname;
-        localStorage.setItem('redirectAfterLoad', originalPath);
-        window.location.replace('/spa-test/')
+        function redirect() {
+            const isIframe = window.self !== window.top
+
+            function replaceLocation(path) {
+                console.info("is iframe", isIframe)
+                console.info("redirecting to", path)
+                window.location.replace(path)
+            }
+
+            if (isIframe) {
+                // 404 on root
+                if (localStorage.getItem('not-found')) {
+                    localStorage.removeItem('not-found')
+                    replaceLocation('/static/404.html')
+                    return
+                }
+
+                // 404 on github
+                if (localStorage.getItem('retried')) {
+                    localStorage.removeItem('retried')
+                    localStorage.setItem('not-found', true)
+                    replaceLocation('/integration/static/404.html')
+                    return
+                }
+
+                if (localStorage.getItem('resource')) {
+                    const resource = localStorage.getItem('resource')
+                    localStorage.setItem('resource', resource.replace('/integration', ''))
+                    localStorage.setItem('retried', true)
+                    replaceLocation(`/${resource}`)
+                }
+
+                const resource = window.location.pathname;
+                localStorage.setItem('resource', resource);
+                replaceLocation(`/integration/${resource}`)
+                return
+            }
+
+            // redirect on root
+            if (localStorage.getItem('resource')) {
+                const resource = localStorage.getItem('resource')
+                localStorage.setItem('resource', resource.replace('/integration', ''))
+                localStorage.setItem('retried', true)
+                replaceLocation('/')
+                return
+            }
+
+            // redirect on github
+            const originalPath = window.location.pathname;
+            localStorage.clear()
+            localStorage.setItem('resource', originalPath);
+            replaceLocation('/integration')
+        }
+        redirect()
     </script>
-    </body>
+</body>
+
 </html>

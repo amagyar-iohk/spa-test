@@ -1,125 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Pages SPA POC</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f0f0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Identus Integration</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <link rel="icon" href="static/identus.svg" type="image/svg+xml">
+  <style>
+    html,
+    body {
+      height: 100%;
+      /* Ensure full viewport height */
+      margin: 0;
+      padding: 0;
+    }
 
-        #app {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 600px;
-            text-align: center;
-        }
+    #content-iframe {
+      width: 100%;
+      padding-top: 52px;
+      height: 100%;
+      /* Adjust height based on navbar height */
+      border: none;
+      /* Remove default iframe border */
+    }
 
-        .nav {
-            margin-bottom: 20px;
-        }
-
-        .nav a {
-            margin: 0 10px;
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        .nav a:hover {
-            color: #0056b3;
-        }
-
-        #home, #about, #docs {
-            display: none;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        #home.active, #about.active, #docs.active {
-            display: block;
-        }
-    </style>
+    @media screen and (max-width: 1023px) {
+      #content-iframe {
+        height: calc(100% - 96px);
+        /* Adjust for collapsed navbar */
+      }
+    }
+  </style>
 </head>
-<body>
-    <div id="app">
-        <nav class="nav">
-            <a href="/spa-test/">Home</a>
-            <a href="/spa-test/about">About</a>
-            <a href="/spa-test/docs">Docs</a>
-        </nav>
-        <div id="home" class="active">
-            <h2>Home Page</h2>
-            <p>Welcome to the Home Page!</p>
-        </div>
-        <div id="about">
-            <h2>About Page</h2>
-            <p>This is the About Page.</p>
-        </div>
-        <div id="docs">
-            <h2>Docs Page</h2>
-            <p>This is the Documentation Page.</p>
-        </div>
+
+<body style="display: none">
+  <nav class="navbar is-transparent is-fixed-top" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a href="home" class="navbar-item">
+        <img src="static/identus.svg" alt="Identus">
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
 
-    <script>
-      const routes = {
-        '/spa-test/': 'home',
-        '/spa-test/about': 'about',
-        '/spa-test/docs': 'docs',
-      };
+    <div id="navbar" class="navbar-menu">
+      <div class="navbar-start">
+        <a href="releases" class="navbar-item">Releases</a>
+        <a href="weekly" class="navbar-item">Weekly</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Services</a>
+          <div class="navbar-dropdown is-boxed">
+            <a href="cloud-agent" class="navbar-item">Cloud Agent</a>
+            <a href="mediator" class="navbar-item">Mediator</a>
+            <a href="prism-node" class="navbar-item">Prism Node</a>
+          </div>
+        </div>
 
-      function showPage(pageId) {
-        document.querySelectorAll('#home, #about, #docs').forEach((p) => p.classList.remove('active'));
-        const page = document.getElementById(pageId);
-        if (page) {
-          page.classList.add('active');
-        }
-      }
-
-      function handleRouteChange() {
-          const path = window.location.pathname;
-          const pageId = routes[path] || 'home';
-          showPage(pageId);
-      }
-
-      // Initial route handling
-      handleRouteChange();
-
-      // Set up client-side navigation
-      document.querySelectorAll('.nav a').forEach(link => {
-          link.addEventListener('click', (event) => {
-              event.preventDefault();
-              const href = event.target.getAttribute('href');
-              window.history.pushState(null, '', href);
-              handleRouteChange();
-          });
-      });
-
-      // Handle back/forward button navigation
-      window.addEventListener('popstate', handleRouteChange);
-
-      // Check for stored path after initial load (for 404 redirect)
-      document.addEventListener('DOMContentLoaded', () => {
-        const storedPath = localStorage.getItem('redirectAfterLoad');
-        if (storedPath && storedPath !== '/spa-test/') {
-            window.history.replaceState(null, '', storedPath);
-            handleRouteChange();
-        }
-        localStorage.removeItem('redirectAfterLoad');
-      });
-    </script>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">SDKs</a>
+          <div class="navbar-dropdown is-boxed">
+            <a href="typescript" class="navbar-item">Typescript</a>
+            <a href="swift" class="navbar-item">Swift</a>
+            <a href="kotlin" class="navbar-item">Kotlin</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <iframe id="content-iframe" src="static/loading.html"></iframe>
+  <script src="static/main.js"></script>
 </body>
+
 </html>
