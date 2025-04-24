@@ -8,15 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const routes = {
-    'home': 'static/home.html',
-    'releases': 'reports/releases',
-    'weekly': 'reports/weekly',
-    'cloud-agent': 'reports/cloud-agent',
-    'mediator': 'reports/mediator',
-    'prism-node': 'reports/prism-node',
-    'typescript': 'reports/sdk-ts',
-    'swift': 'reports/sdk-swift',
-    'kotlin': 'reports/sdk-kmp'
+    '/home': 'static/home.html',
+    '/releases': 'reports/releases',
+    '/weekly': 'reports/weekly',
+    '/cloud-agent': 'reports/cloud-agent',
+    '/mediator': 'reports/mediator',
+    '/prism-node': 'reports/prism-node',
+    '/typescript': 'reports/sdk-ts',
+    '/swift': 'reports/sdk-swift',
+    '/kotlin': 'reports/sdk-kmp'
   };
   const defaultPage = '/home';
 
@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
       target = target.closest('a')
     }
     event.preventDefault();
-    const targetPage = target.getAttribute('href')
+    const host = window.location.origin
+    const targetPage = target.href.replace(host, '')
     if (targetPage) {
       history.pushState({ page: targetPage }, '', targetPage);
       document.activeElement.blur()
@@ -47,11 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('resource')
       if (storedPath) {
         console.error("stored path", storedPath)
-        window.history.replaceState(null, '', storedPath);
+        window.history.replaceState(null, '', `.${storedPath}`);
         loadContent(storedPath);
       } else {
         loadContent(defaultPage);
-        history.replaceState({ page: defaultPage }, '', defaultPage);
+        history.replaceState({ page: defaultPage }, '', `.${defaultPage}`);
       }
     }
   }
