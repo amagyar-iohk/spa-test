@@ -2,7 +2,7 @@ const isLocalhost = window.location.host.includes('localhost')
 const basePath = isLocalhost ? "/" : "/spa-test"
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("v1.4.3")
+  console.log("v1.5")
   const contentFrame = document.getElementById('content-iframe');
   const dropdownLinks = document.querySelectorAll('nav a');
 
@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const defaultPage = `${basePath}/home`;
 
   function loadContent(path) {
+    console.log("ends with /?", path.endsWith("/"))
+    if (path.endsWith('/')) {
+      path = path.slice(0, -1)
+    }
     console.log('main - loading content:', path, routes[path])
     if (!routes[path]) {
       contentFrame.contentWindow.location.replace('');
