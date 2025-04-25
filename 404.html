@@ -9,6 +9,7 @@
 
         function redirect() {
             function replaceLocation(path) {
+                console.log('iframe', isIframe, 'to', path)
                 window.location.replace(path);
             }
 
@@ -16,7 +17,7 @@
                 // redirect to static 404.html
                 if (localStorage.getItem('resource')) {
                     localStorage.clear();
-                    replaceLocation(`${basePath}/static/404.html`);
+                    replaceLocation(`${basePath}static/404.html`);
                     return;
                 }
 
