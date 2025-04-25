@@ -1,4 +1,4 @@
-console.info("v3")
+console.info("v3.0.1")
 
 const isLocalhost = window.location.host.includes('localhost')
 const basePath = isLocalhost ? "/" : "/spa-test/"
