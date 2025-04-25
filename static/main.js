@@ -1,7 +1,8 @@
+console.info("v3")
+
 const isLocalhost = window.location.host.includes('localhost')
 const basePath = isLocalhost ? "/" : "/spa-test/"
 
-console.log("v2.0.5")
 const contentFrame = document.getElementById('content-iframe');
 const dropdownLinks = document.querySelectorAll('nav a');
 
@@ -15,12 +16,19 @@ const routes = {};
 routes[`${basePath}`] = `${basePath}static/home.html`;
 routes[`${basePath}releases`] = `${basePath}reports/releases/index.html`;
 routes[`${basePath}weekly`] = `${basePath}reports/weekly/index.html`;
+routes[`${basePath}weekly/{report}`] = `${basePath}reports/weekly/{report}/index.html`;
 routes[`${basePath}cloud-agent`] = `${basePath}reports/cloud-agent/index.html`;
+routes[`${basePath}cloud-agent/{report}`] = `${basePath}reports/cloud-agent/{report}/index.html`;
 routes[`${basePath}mediator`] = `${basePath}reports/mediator/index.html`;
+routes[`${basePath}mediator/{report}`] = `${basePath}reports/mediator/{report}/index.html`;
 routes[`${basePath}prism-node`] = `${basePath}reports/prism-node/index.html`;
+routes[`${basePath}prism-node/{report}`] = `${basePath}reports/prism-node/{report}/index.html`;
 routes[`${basePath}typescript`] = `${basePath}reports/sdk-ts/index.html`;
+routes[`${basePath}typescript/{report}`] = `${basePath}reports/sdk-ts/{report}/index.html`;
 routes[`${basePath}swift`] = `${basePath}reports/sdk-swift/index.html`;
+routes[`${basePath}swift/{report}`] = `${basePath}reports/sdk-swift/{report}/index.html`;
 routes[`${basePath}kotlin`] = `${basePath}reports/sdk-kmp/index.html`;
+routes[`${basePath}kotlin/{report}`] = `${basePath}reports/sdk-kmp/{report}/index.html`;
 
 const defaultPage = `${basePath}`;
 
@@ -29,7 +37,9 @@ function loadContent(path) {
     path = path.slice(0, -1)
   }
   if (!routes[path]) {
-    contentFrame.contentWindow.location.replace(`${basePath}static/404.html`);
+    const route = matchRoute(routes, path);
+    console.info("match route", route)
+    contentFrame.contentWindow.location.replace(route);
   } else {
     contentFrame.contentWindow.location.replace(routes[path]);
   }
@@ -83,3 +93,29 @@ if (navbarBurger && navbarMenu) {
   });
 }
 document.body.style = "";
+
+function matchRoute(routes, path) {
+  for (const routePattern in routes) {
+      if (routes.hasOwnProperty(routePattern)) {
+          const routeValue = routes[routePattern];
+          const escapedPattern = routePattern.replace(/[-\/\\^$*+?.()|[\]]/g, '\\$&').replace(/\{\w+\}/g, '([^/]+)');
+          const regexPattern = `^${escapedPattern}$`;
+          const variableNames = (routePattern.match(/\{\w+\}/g) || []).map(v => v.slice(1, -1));
+          const match = path.match(new RegExp(regexPattern));
+
+          if (match) {
+              const variableValues = match.slice(1);
+              const variables = {};
+              variableNames.forEach((name, index) => {
+                  variables[name] = variableValues[index];
+              });
+              let evaluatedFilePath = routeValue;
+              for (const variableName of variableNames) {
+                  evaluatedFilePath = evaluatedFilePath.replace(new RegExp(`\\{${variableName}\\}`, 'g'), variables[variableName] ?? '');
+              }
+              return evaluatedFilePath
+          }
+      }
+  }
+  return `${basePath}static/404.html`;
+}
