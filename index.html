@@ -34,11 +34,11 @@
   </style>
   <script>
     (function () {
-      const basePath = window.location.host.includes('localhost') ? "" : "/spa-test"
+      const basePath = window.location.host.includes('localhost') ? "/" : "/spa-test"
       const favicon = document.getElementById('favicon');
-      favicon.href = `${basePath}/static/identus.svg`;
+      favicon.href = `${basePath}static/identus.svg`;
       var script = document.createElement('script');
-      script.src = `${basePath}/static/main.js`;
+      script.src = `${basePath}static/main.js`;
       document.head.appendChild(script);
     })()
   </script>
