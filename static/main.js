@@ -1,15 +1,14 @@
 const isLocalhost = window.location.host.includes('localhost')
 const basePath = isLocalhost ? "/" : "/spa-test/"
 
-console.log("v2.0.2")
+console.log("v2.0.3")
 const contentFrame = document.getElementById('content-iframe');
 const dropdownLinks = document.querySelectorAll('nav a');
 
 dropdownLinks.forEach(item => {
-  if (item.href) {
-    item.setAttribute('href', `${basePath}${item.getAttribute('href')}`)
-    item.addEventListener('click', handleNavigation);
-  }
+  const href = `${basePath}${item.getAttribute('href')}`.replace('//', '/')
+  item.setAttribute('href', href)
+  item.addEventListener('click', handleNavigation);
 });
 
 const routes = {};

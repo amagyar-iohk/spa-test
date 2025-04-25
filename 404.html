@@ -3,7 +3,7 @@
 <body>
     <script>
         const isLocalhost = window.location.host.includes('localhost');
-        const basePath = isLocalhost ? "" : "spa-test";
+        const basePath = isLocalhost ? "/" : "/spa-test";
         const isIframe = window.self !== window.top;
         const resource = window.location.pathname;
 
@@ -29,7 +29,7 @@
             // redirect on SPA
             localStorage.clear();
             localStorage.setItem('resource', resource);
-            replaceLocation(`/${basePath}`);
+            replaceLocation(`${basePath}`);
         }
         redirect();
     </script>
